@@ -29,6 +29,7 @@ begin
 		
 		for I in 0 to 12 loop
 			if (distance_int > ( I*ratio ) and distance_int < ( ( I + 1) *ratio) ) then
+				--use variable inside loop
 				note <= conv_std_logic_vector(I, note'length);
 			end if;
 		end loop;
