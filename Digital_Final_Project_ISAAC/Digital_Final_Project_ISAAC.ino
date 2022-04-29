@@ -17,7 +17,7 @@ int scale[] = {
   NOTE_A4, NOTE_AS4, NOTE_B4, NOTE_C4, NOTE_CS5, NOTE_D5, NOTE_DS5, NOTE_E5, NOTE_F5, NOTE_FS5, NOTE_G5, NOTE_GS5, NOTE_A5
 };
 
-int current = 12;
+int note = 12;
 char s[] = "00000";
 
 void setup()
@@ -37,49 +37,11 @@ void setup()
 void loop(){
   sendBinary(hc.dist());
   readBinary();
-  if(current > 12){
+  if(note > 12){
     noTone(6);
   }else{
-     tone(6, scale[current]);
+     tone(6, scale[note]);
   }
-  /*
-  if(hc.dist() < 41 || hc.dist() > 2){
-      if(hc.dist() > 2 && hc.dist() < 5){
-        current_note = 0;
-      }else if(hc.dist() > 5 && hc.dist() < 8){
-        current_note = 1;
-      }else if(hc.dist() > 8 && hc.dist() < 11){
-        current_note = 2;
-      }else if(hc.dist() > 11 && hc.dist() < 14){
-        current_note = 3;
-      }else if(hc.dist() > 14 && hc.dist() < 17){
-        current_note = 4;
-      }else if(hc.dist() > 17 && hc.dist() < 20){
-        current_note = 5;
-      }else if(hc.dist() > 20 && hc.dist() < 23){
-        current_note = 6;
-      }else if(hc.dist() > 23 && hc.dist() < 26){
-        current_note = 7;
-      }else if(hc.dist() > 26 && hc.dist() < 29){
-        current_note = 8;
-      }else if(hc.dist() > 29 && hc.dist() < 32){
-        current_note = 9;
-      }else if(hc.dist() > 32 && hc.dist() < 35){
-        current_note = 10;
-      }else if(hc.dist() > 35 && hc.dist() < 38){
-        current_note = 11;
-      }else if(hc.dist() > 38 && hc.dist() < 41){
-        current_note = 12;
-      }else if(hc.dist() > 41 || hc.dist() < 2){
-        current_note = 13;
-      }
-      tone(6, scale[current_note]);
-      //analogWrite(6, scale[current_note]);
-    }else{
-      analogWrite(6, LOW);
-    }
-    delay(200);
-    */
 }
 
 void sendBinary(int input){
@@ -100,7 +62,7 @@ void sendBinary(int input){
 void readBinary(){
 
     for (int i = 5; i > 0; i--){
-      s[i] = '0';
+      s[i] = "00000";
       if(digitalRead(i+8) == HIGH){
           s[i] = '1';
           Serial.print("1");
@@ -111,13 +73,12 @@ void readBinary(){
       }
       Serial.println();
 
-      current = 0;
+      note = 0;
       
-      for (int i=5; i < 0; i--)
+      for (int i=4; i <= 0; i--)
       {
-        current *= 2; // double the result so far
         if (s[i] == '1'){
-          current++;  //add 1 if needed
+          note = note + pow(2, i);
         }
       }
     Serial.println(current);
