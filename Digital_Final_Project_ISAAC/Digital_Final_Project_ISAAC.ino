@@ -35,13 +35,28 @@ void setup()
 }
 
 void loop(){
+
+  /*
   sendBinary(hc.dist());
   readBinary();
-  if(note > 12){
+  if(current > 12){
     noTone(6);
   }else{
-     tone(6, scale[note]);
+     tone(6, scale[current]);
   }
+  */
+  Serial.println(hc.dist());
+  float current_distance = hc.dist();
+  for(int i = 0; i < 14; i++){
+    if( hc.dist() > (i*ratio) && hc.dist() < ratio*( i + 1 )){
+      tone(6, scale[i]);
+      Serial.println(i);
+    }
+    if( i == 14 ){
+      noTone(6);  
+    }
+  }
+  delay(60);
 }
 
 void sendBinary(int input){
