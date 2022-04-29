@@ -3,9 +3,9 @@
 //Code by Isaac Shaw
 /*
 Integration with FPGA, ultrasonic sensor reads distance
-This code reads ultrasonic input, converts it to binary parallel, then sends it to the FPGA
+This code reads ultrasonic input, converts it to binary, then sends it to the FPGA in parallel
 The FPGA does logic to determine what note should be played then sends binary number in binary parallel
-Arduino then converts this number into a usable tone for the buzzer and sends it out.
+Arduino then converts this number into a usable tone for the buzzer and use the Tone commands to play the note.
 */
 #include "pitches.h"
 
