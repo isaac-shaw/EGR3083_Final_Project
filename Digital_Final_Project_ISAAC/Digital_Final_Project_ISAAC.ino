@@ -1,3 +1,4 @@
+   
 #include <HCSR04.h>
 
 //Code by Isaac Shaw
@@ -14,22 +15,23 @@ HCSR04 hc(7, 8); //initialisation class HCSR04 (trig pin , echo pin)
 
 // 12 note scale
 int scale[] = {
-  NOTE_A4, NOTE_AS4, NOTE_B4, NOTE_C4, NOTE_CS5, NOTE_D5, NOTE_DS5, NOTE_E5, NOTE_F5, NOTE_FS5, NOTE_G5, NOTE_GS5, NOTE_A5
+  NOTE_A4, NOTE_AS4, NOTE_B4, NOTE_C5, NOTE_CS5, NOTE_D5, NOTE_DS5, NOTE_E5, NOTE_F5, NOTE_FS5, NOTE_G5, NOTE_GS5, NOTE_A5
 };
 
 int note = 12;
+int ratio = 4;
 char s[] = "00000";
 
 void setup()
 {
     Serial.begin(9600);
-    for(int i = 0; i <= 5; i++){
+    for(int i = 0; i < 6; i++){
       pinMode(i, OUTPUT);
     }
-    for(int i = 9; i < 13; i++){
+    for(int i = 9; i < 14; i++){
       pinMode(i, INPUT);
     }
-
+     pinMode(6, OUTPUT);
     // iterate over the notes of the melody:
 
 }
@@ -45,22 +47,26 @@ void loop(){
      tone(6, scale[current]);
   }
   */
-  Serial.println(hc.dist());
   float current_distance = hc.dist();
-  for(int i = 0; i < 14; i++){
-    if( hc.dist() > (i*ratio) && hc.dist() < ratio*( i + 1 )){
-      tone(6, scale[i]);
-      Serial.println(i);
+  sendBinary(hc.dist());
+    if( hc.dist() > (14*ratio) ){
+      noTone(6);
+      Serial.println("out of range");
+    }else{
+      //tone(6, 10*hc.dist() + 100);
+      for(int i = 0; i < 13; i++){
+        if( hc.dist() > (i*ratio) && hc.dist() < ratio*( i + 1 )){
+          tone(6, scale[i]);
+          Serial.println(i);
+        }
+      }
     }
-    if( i == 14 ){
-      noTone(6);  
-    }
-  }
-  delay(60);
+    delay(1000);
 }
+  
 
 void sendBinary(int input){
-    for (int i = 6; i >= 0; i--) {
+    for (int i = 5; i >= 0; i--) {
         int b = input >> i;
         if (b & 1){
           digitalWrite(i, HIGH);
@@ -71,13 +77,11 @@ void sendBinary(int input){
           }
         }
         Serial.println();
-        delay(1000);
     }
 
 void readBinary(){
 
     for (int i = 5; i > 0; i--){
-      s[i] = "00000";
       if(digitalRead(i+8) == HIGH){
           s[i] = '1';
           Serial.print("1");
@@ -96,6 +100,6 @@ void readBinary(){
           note = note + pow(2, i);
         }
       }
-    Serial.println(current);
+    Serial.println(note);
     delay(1000);
   }
