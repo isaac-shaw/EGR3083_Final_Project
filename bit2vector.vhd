@@ -27,9 +27,13 @@ architecture arc of bit2vector is
 
 
 begin
-	process(in5)
-		begin			
-			vector_out(0) <= in0;
+	process(in0, in1, in2, in3, in4, in5)
+		begin
+			if(in0 = '1') then
+				vector_out(0) <= '1';
+			else
+				vector_out(0) <= '0';
+			end if;
 			vector_out(1) <= in1;
 			vector_out(2) <= in2;
 			vector_out(3) <= in3;

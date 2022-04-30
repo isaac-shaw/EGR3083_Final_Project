@@ -22,16 +22,20 @@ architecture arc of distance2note is
 	
 begin
 	process(current_distance)
-		variable ratio : integer := 3;
+		variable ratio : integer := 4;
 		variable distance_int : integer;
+		variable note_temp : std_logic_vector(4 downto 0);
+		
 	begin
 		distance_int := conv_integer(current_distance);
 		
 		for I in 0 to 12 loop
-			if (distance_int > ( I*ratio ) and distance_int < ( ( I + 1) *ratio) ) then
-				--use variable inside loop
-				note <= conv_std_logic_vector(I, note'length);
+			if (distance_int > ( I * ratio ) and distance_int < ( ( I + 1) * ratio) ) then
+				note_temp := conv_std_logic_vector(I, note'length);
 			end if;
 		end loop;
+		
+		note <= note_temp;
+		
 	end process;
 end;
