@@ -4,19 +4,19 @@
 --VHDL logic to find out what note to play based on distance
 
 
-LIBRARY IEEE;
-USE IEEE.std_logic_1164.ALL;
-USE IEEE.numeric_std.ALL;
-USE IEEE.std_logic_arith.ALL;
-USE IEEE.std_logic_signed.ALL;
+library IEEE;
+use IEEE.std_logic_1164.all;
+use IEEE.numeric_std.all;
+use IEEE.std_logic_arith.all;
+use IEEE.std_logic_signed.all;
 
 entity distance2note is
 	port
 	(
-		current_distance : in std_logic_vector(5 DOWNTO 0);
+		current_distance : in std_logic_vector(5 downto 0);
 		clock : in std_logic;
 		
-		note : out std_logic_vector(4 DOWNTO 0)
+		note : out std_logic_vector(4 downto 0)
 	);
 end distance2note;
 
